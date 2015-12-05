@@ -1,7 +1,8 @@
-
 var margin = {top:20 , right: 20, bottom: 30, left: 40},
     width = 960 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
+
+
 
 var svg = d3.select("#hand").append("svg")
     .attr("width", width - 300)
@@ -15,6 +16,8 @@ var svg2 = d3.select("#pca").append("svg")
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
     .attr("transform", "translate("+ margin.left + "," + margin.top + ")");
+
+
 
 
 d3.text("hands.csv", function(text) {
@@ -51,7 +54,7 @@ var pos = {x: 250, y: 230, xh: 60, yh: 85};
 var circ_r = 200;
 var scale_h = width/3;
 
-	// Scale the range of the data
+  // Scale the range of the data
 
   var xValue = function(d) { return d;}, // data -> value
     xScale = d3.scale.linear()
@@ -69,11 +72,11 @@ var yValue = function(d) { return d;}, // data -> value
 
 
 
-	// Add the X Axis
+  // Add the X Axis
 svg2.append("g")
-		.attr("class", "x_axis")
-		.attr("transform", 'translate(0, '+ height +')')
-		.call(xAxis);
+    .attr("class", "x_axis")
+    .attr("transform", 'translate(0, '+ height +')')
+    .call(xAxis);
     svg2.append("text")
     .attr("class", "xlabel")
     .attr("x", width2 - 40)
@@ -81,10 +84,10 @@ svg2.append("g")
     .style("text-anchor", "end")
     .text("PC"+pc[0]);
 
-	// Add the Y Axis
+  // Add the Y Axis
 svg2.append("g")
-		.attr("class", "y_axis")
-		.call(yAxis);
+    .attr("class", "y_axis")
+    .call(yAxis);
   svg2.append("text")
     .attr("class", "ylabel")
     .attr("transform", "rotate(-90)")
@@ -136,6 +139,46 @@ var handy = svg.append("g")
   .on("mousemove", function(){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
   .on("mouseout", function(){return tooltip.style("visibility", "hidden");});
 
+d3.select("#outlier")
+.on("mouseover",   function(){
+     var pc = [1,2];
+    var pca_hands = d3.zip(hand_pca_data[pc[0]-1],hand_pca_data[pc[1]-1]);
+    xScale.domain([d3.min(pca_hands, function(d) { return d[0]-0.05; }),d3.max(pca_hands, function(d) { return d[0]; })]);
+    yScale.domain([d3.min(pca_hands, function(d) { return d[1]-0.05; }), d3.max(pca_hands, function(d) { return d[1]; })]);
+    svg2.selectAll('circle')
+        .data(pca_hands)
+        .transition()
+        .duration(1000)
+        .attr("cx", xMap)
+        .attr("cy", yMap);
+
+    svg2.select(".x_axis")
+        .transition()
+        .duration(1000)
+        .call(xAxis);
+    svg2.select(".xlabel")
+        .text("PC"+pc[0]);
+    // Update Y Axis
+    svg2.select(".y_axis")
+        .transition()
+        .duration(1000)
+        .call(yAxis);
+    svg2.select(".ylabel")
+        .text("PC"+pc[1]);
+    svg2.selectAll('circle')
+    .style('fill',function(d,i){ 
+      if(39===i) return 'red';
+      else return 'black';
+    });
+})
+.on("mouseout",  function () {
+    svg2.selectAll('circle')
+    .style('fill',function(d,i){ 
+      if(39===i) return 'black';
+    });
+
+} )
+
   document.getElementById("button").addEventListener('click', function () {
     var input1 = document.getElementById("pcx").value;
     var input2 = document.getElementById("pcy").value;
@@ -163,6 +206,11 @@ var handy = svg.append("g")
         .call(yAxis);
     svg2.select(".ylabel")
         .text("PC"+pc[1]);
+
+
 });
 });
 });
+
+
+
