@@ -33,27 +33,31 @@
 <p>
 Use the below visualisation to gain a better understanding of PCA. The graph shows the first two principle components plotted against one another. Using the input on the left, you can change which components are displayed to visualise the variance between different components. Once you have chosen which components you would like to visualise, by clicking the plotted points, the hand on the right will update with the corresponding hand. 
 
-In order to facilitate the analysis of the points, and to identify clusters, you can use K-Means clustering by selecting a k value (number of clusters) and clicking “add clusters”. Please note, clusters of size 2 and below will not be visualised. 
+In order to facilitate the analysis of the points, and to identify clusters, you can use K-Means clustering by selecting a k value (number of clusters) and clicking “add clusters”. Please note, clusters of size 2 and below will not be visualised, so try to generate
+    the clusters again if there are missing clusters in the plot.
 
 By hovering over a hand in the grid at the bottom of the visualisation, a point in the graph will be highlighted which corresponds to that hand. 
 
 If you find text hightlighted in red at any part of the webpage, by hovering over, the graph will be updated and display some related information.
 </p>
-    <p>PC
-      <input id="pcx" value="1" />
-        PC
-      <input id="pcy" value="2" /><input type="button" value="Update PCA" id="button"> 
-                        
-      Generate cluster with k=<input id="km" value="3" /><input type="button" value="Add clusters" id="button1">
-    </p>
-      <p>
-         
-      </p>
     <div id="plot">
-     <div id="hand"></div>
-     <div id="pca"></div>
-        <div id="all_hands"></div>
+     <div id="hand" align="center">
+         <h3>Hand Outline Representation</h3>
+     </div>
+     <div id="pca" align="center">
+         <h3>Principal Component Analysis</h3>
+         <p>PC
+             <input id="pcx" value="1" style="width: 30px;" />
+             PC
+             <input id="pcy" value="2" style="width: 30px;" />   <input type="button" value="Update PCA" id="button">
+             Generate clusters with k = <input id="km" value="3" style="width: 30px;"/>   <input type="button" value="Add clusters" id="button1">
+         </p>
+
+     </div>
+        <div id="all_hands">
+        </div>
     </div>
+    <div id = "discuss">
     <H1 id = "discussion">Discussion</H1>
     <p>
       In order to understand better the PCA it will be useful to play with the different principal components on the visualization, this will give us a better idea of how to interpret the data.</p>
@@ -63,8 +67,8 @@ If you find text hightlighted in red at any part of the webpage, by hovering ove
       </p>
       <p>
         Using k means clustering it’s possible to identify points with little variance in the components.
-In this particular dataset as the variance is limited by the movement of the hand, there are no clearly defined clusters which can be found. By using a high k value is easier to identify similar points. 
-
+In this particular dataset as the variance is limited by the movement of the hand, there are no clearly defined clusters which can be found. By using a high k value is easier to identify similar points.
+    </div>
       </p>
       <h2 id = "cont">Contributors</h2>
       <p>

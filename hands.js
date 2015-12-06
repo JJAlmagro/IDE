@@ -106,15 +106,15 @@ svg.append('circle')
     .attr("r", width/4)
     .attr("stroke", "black")
     .attr("fill", "white")
-    .attr('transform', 'translate('+pos.x+','+pos.y+')');
+    .attr('transform', 'translate('+pos.x+','+(pos.y+20)+')');
 var handy = svg.append("g")
     .append("path")
-      .attr("d", lineFn(hands[20]))
+      .attr("d", lineFn(hands[0]))
       .attr("stroke", "black")
       .attr("stroke-width", 1)
       .attr("opacity", "1")
       .attr("fill", "rgba(255,228, 196, 0.6)")
-      .attr('transform', 'translate('+(pos.x/4-15)+','+pos.y/4+')');
+      .attr('transform', 'translate('+(pos.x/4-15)+','+(pos.y/4+20)+')');
 
 var points = svg2.selectAll('circle')
   .data(pca_hands)
@@ -128,9 +128,27 @@ var points = svg2.selectAll('circle')
     .transition()
     .duration(1250)
       .attr("d", lineFn(hands[i]));})
-  .on("mouseover", function(d, i){return tooltip.style("visibility", "visible").text("Hand: " + i), svg2.style("cursor", "pointer");})
+  .on("mouseover", function(d, i){return tooltip.style("visibility", "visible").text("Hand: " + i), ind = i,
+      svg2.selectAll('circle')
+          .attr("r", function(d,i){
+              if(ind===i) return 6;
+              else return 4;
+          })
+          .style('fill',function(d,i){
+                  if(ind===i) return 'black';
+                  else return 'white';
+              }),
+      svg2.style("cursor", "pointer");})
   .on("mousemove", function(){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
-  .on("mouseout", function(){return tooltip.style("visibility", "hidden");});
+  .on("mouseout", function(d, i){return tooltip.style("visibility", "hidden"), ind = i,
+      svg2.selectAll('circle')
+      .attr("r", function(d,i){
+          if(ind===i) return 4;
+          else return 4;
+      })
+          .style('fill',function(d,i){
+              if(ind===i) return 'white';
+          });});
 
     function new_cluster (data, figure, k, trans) {
         var scaledX = data.map(function(d){return xMap(d);});
@@ -140,7 +158,8 @@ var points = svg2.selectAll('circle')
 
         var clusters = clusterfck.kmeans(scaleD, k);
 
-        var colors = ["red", "green", "blue", "orange", "yellow", "purple", "grey", "brown"];
+        var colors = ["red", "green", "blue", "orange", "yellow", "purple", "grey", "brown", "black", "lightblue",
+        "lightgray", "pink", "lightgreen", "lightyellow"];
         if (trans == "new") {
             figure.selectAll(".cluster").remove();
         }
@@ -338,7 +357,7 @@ function new_pca(input1,input2) {
 
 });
 
-    function calendarWeekHour(id, width, height, square, points)
+    function multiple_hands(id, width, height, square, points)
     {
 
         var grid = d3.select(id).append("svg")
@@ -346,7 +365,7 @@ function new_pca(input1,input2) {
             .attr("height", height)
             .attr("class", "chart");
 
-        var calData = randomData(width, height, square, grid);
+        var calData = grid_gen(width, height, square, grid);
 
         var row = grid.selectAll(".row")
             .data(calData)
@@ -363,12 +382,12 @@ function new_pca(input1,input2) {
             .attr("height", function(d) { return d.height; })
             .style("fill", '#FFF')
             .style("stroke", '#555');
-        randomData(width, height, square, grid, points);
+        grid_gen(width, height, square, grid, points);
 
     }
 
 
-    function randomData(gridWidth, gridHeight, square, grid, points)
+    function grid_gen(gridWidth, gridHeight, square, grid, points)
     {
         var data = new Array();
         var gridItemWidth = gridWidth / 25;
@@ -441,7 +460,7 @@ function new_pca(input1,input2) {
         }
         return data;
     }
-    calendarWeekHour('#all_hands', 1800, 200, true, points);
+    multiple_hands('#all_hands', 1800, 200, true, points);
 
 
 });
