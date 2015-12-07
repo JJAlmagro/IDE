@@ -214,7 +214,6 @@ function new_pca(input1,input2) {
 }
 
     d3.select("#outlier")
-
         .on("mouseover",   function(){
             svg2.selectAll(".cluster").remove();
             new_pca(1,2);
@@ -233,6 +232,34 @@ function new_pca(input1,input2) {
                 var input2 = document.getElementById("pcy").value;
                  svg2.selectAll(".cluster").remove();
                 new_pca(input1,input2);
+            svg2.selectAll('circle')
+                .attr("r", function(d,i){
+                    if(39===i) return 4;
+                    else return 4;
+                })
+                .style('fill',function(d,i){
+                    if(39===i) return 'white';
+                });
+        });
+    d3.select("#outlier11")
+        .on("mouseover",   function(){
+            svg2.selectAll(".cluster").remove();
+            new_pca(1,2);
+            svg2.selectAll('circle')
+                .attr("r", function(d,i){
+                    if(39===i) return 6;
+                    else return 4;
+                })
+                .style('fill',function(d,i){
+                    if(39===i) return 'red';
+                    else return 'white';
+                });
+        })
+        .on("mouseout",  function () {
+            var input1 = document.getElementById("pcx").value;
+            var input2 = document.getElementById("pcy").value;
+            svg2.selectAll(".cluster").remove();
+            new_pca(input1,input2);
             svg2.selectAll('circle')
                 .attr("r", function(d,i){
                     if(39===i) return 4;
